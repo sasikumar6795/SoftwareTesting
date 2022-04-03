@@ -4,6 +4,10 @@ package com.sasicodes.softwareTesting.customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class CustomerRegistrationService {
 
@@ -15,5 +19,28 @@ public class CustomerRegistrationService {
     }
 
     public void registerNewCustomer(CustomerRegistrationRequest request) {
+        //1.check phone number is taken
+        //2. if taken lets check if it belongs to same customer
+        //  2.1 if yes return
+        //  2.2 else throw exception
+
+        //2. save customer
+        String phoneNumber = request.getCustomer().getPhoneNumber();
+        Optional<Customer> optionalCustomer = customerRepository.selectCustomerByPhoneNumber(phoneNumber);
+        if(optionalCustomer.isPresent())
+        {
+            Customer customer = optionalCustomer.get();
+            if(customer.getName().equals(request.getCustomer().getName()))
+            {
+                return;
+            }
+            throw new IllegalStateException(String.format("phone number [%s] is taken", phoneNumber));
+        }
+
+        if(request.getCustomer().getId()==null)
+        {
+            request.getCustomer().setId(UUID.randomUUID());
+        }
+        customerRepository.save(request.getCustomer());
     }
 }

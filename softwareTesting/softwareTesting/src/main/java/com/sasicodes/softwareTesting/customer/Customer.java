@@ -1,12 +1,15 @@
 package com.sasicodes.softwareTesting.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
-@Entity
+@JsonIgnoreProperties(value={"id"}, allowGetters = true)
+@Entity(name = "Customer")
 public class Customer {
 
     @Id
@@ -51,5 +54,15 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }
