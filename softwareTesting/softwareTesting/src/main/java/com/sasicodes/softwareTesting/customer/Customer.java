@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.UUID;
 
-@JsonIgnoreProperties(value={"id"}, allowGetters = true)
+@JsonIgnoreProperties(allowGetters = true)
 @Entity(name = "Customer")
 public class Customer {
 
@@ -70,5 +70,12 @@ public class Customer {
         return Objects.hash(id, name, phoneNumber);
     }
 
-
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }
